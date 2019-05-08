@@ -68,6 +68,6 @@ int main()
 
     
 
-    //printf("Hello world\n");
+    printf("Teste!\n");
     return 0;
 }
