@@ -22,7 +22,7 @@ NoArv* CriaNo(int Dado)
     return ptrNo;
 }
 
-NoArv* ConsultaLocal(NoArv *Raiz, int chave, int lado)
+NoArv* ConsultaLivre(NoArv *Raiz, int chave, int lado)
 {
     if(!Raiz)
         return NULL;
@@ -32,14 +32,41 @@ NoArv* ConsultaLocal(NoArv *Raiz, int chave, int lado)
 
     for(int i=0; i<n;i++)
     {
-        NoArv *ptrNo = ConsultaLocal(Raiz->SubArvores[i],chave,lado);
+        NoArv *ptrNo = ConsultaLivre(Raiz->SubArvores[i],chave,lado);
         if(ptrNo)
             return ptrNo;
     }
 }
+
+NoArv* ConsultaLocal(NoArv *ptrNo, int ptrChave)
+{
+    int i =0;
+    if(! ptrNo) //arvore vazia
+        return NULL; 
+    
+    if(ptrNo->ptrDado == ptrChave) //se encontrou
+        return ptrNo;
+
+    for(i=0; i< n; i++)
+    {
+        NoArv *ptrNo2 = ConsultaLocal(ptrNo->SubArvores[i], ptrChave);
+        if ( ptrNo2 )
+        return ptrNo2;
+    }
+    printf("finl \n");
+ 
+}
+int consulta(Arvore *ptrArvore, int chave)
+{
+    NoArv *ptrNo = ConsultaLocal(ptrArvore->ptrRaiz, chave);
+    if (!ptrNo)
+        return 0;
+    printf("encontreiiiiii \n");
+    return 1;
+}
 int Insere_Pai(Arvore *ptrArvore, int chavePai, int lado, int ptrElemento)
 {
-    NoArv *ptrPai = ConsultaLocal(ptrArvore->ptrRaiz,chavePai, lado);
+    NoArv *ptrPai = ConsultaLivre(ptrArvore->ptrRaiz,chavePai, lado);
 
     NoArv *ptrNo = CriaNo(ptrElemento);
     if ( !ptrNo )

@@ -17,7 +17,7 @@ typedef struct Arvore
 
 void criaArvore(Arvore *ptrArvore);
 int Insere_Pai(Arvore *ptrArvore, int chavePai, int lado, int ptrElemento);
-int consulta(Arvore *ptrArvore, void *ptrChave);
+int consulta(Arvore *ptrArvore, int chave);
 void Destroi(Arvore *ptrArvore);
 void Caminha_Pre_Fixado(Arvore *ptrArvore);
 

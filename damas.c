@@ -5,69 +5,143 @@
 typedef struct nodo
 {
     int posicaoColuna, posicaoLinha;
+    int dado;   //0 - vazio     1 - brancas     2-pretas
     struct nodo *prox;
 }nodo;
 
 typedef struct
 {
-    nodo *brancas;
-    nodo *pretas;
+    nodo *tab;
 }tabuleiro;
 
 tabuleiro *inicializa()
 {
     tabuleiro *t = (tabuleiro *)malloc(sizeof(tabuleiro));
-    t->brancas = t->pretas = NULL;
+    t->tab=NULL;
 
     return t;
 }
 
-nodo *criaNodo(int indice, int flag)
+nodo *criaNodo(int indice, int linha)
 {
     nodo *novo = (nodo *)malloc(sizeof(nodo));
-    novo->posicaoColuna = indice%4; 
-    flag ? (novo->posicaoLinha = 9 + indice / 4) : (novo->posicaoLinha = indice / 4);
+    int parInd = indice%2;
+    int parLn = linha%2;
+    if(linha <=2) //as linhas preenchidas com peças brancas
+    {
+        novo->posicaoLinha = linha;
+        if(indice < 4)
+            novo->posicaoColuna = indice%4;
+        else
+            novo->posicaoColuna = (indice%4) + 4;
+
+        if(parLn == 0)
+        {
+            if (parInd == 0)   //insere as peças brancas
+                novo->dado = 1;
+            else //insere os zeros das 3 primeiras lihas
+                novo->dado = 0; 
+        }else
+        {
+            if (parInd == 0)   //insere as peças brancas
+                novo->dado = 0;
+            else //insere os zeros das 3 primeiras lihas
+                novo->dado = 1; 
+        }
+        
+         
+        
+    }else if(linha > 2 &&linha < 5) //linhas que ficam vazias na posição inicial
+    {
+        novo->posicaoLinha = linha;
+        novo->dado = 0;
+
+        if(indice < 4)
+            novo->posicaoColuna = indice%4;
+        else
+            novo->posicaoColuna = (indice%4) + 4;
+    }else   //insere as peças pretas
+    {
+        novo->posicaoLinha = linha;
+        if(indice < 4)
+            novo->posicaoColuna = indice%4;
+        else
+            novo->posicaoColuna = (indice%4) + 4;
+
+        if(parLn == 0)
+        {
+            if (parInd == 0)   //insere as peças pretas
+                novo->dado = 2;
+            else //insere os zeros das 3 ultimas lihas
+                novo->dado = 0; 
+        }else
+        {
+            if (parInd == 0)   //insere as peças pretas
+                novo->dado = 0;
+            else //insere os zeros das 3 ultimas lihas
+                novo->dado = 2; 
+        } 
+    }
+    
     novo->prox = NULL;
 
     return novo;
 }
 
-nodo *preenche(nodo *lista, int indice, int flag)
+nodo *inicioTabuleiro(nodo *lista, int indice, int linha)
 {
     if(lista == NULL)
-        return criaNodo(indice, flag);
+        return criaNodo(indice, linha);
 
-    lista->prox = preenche(lista->prox, indice, flag);
+    lista->prox = inicioTabuleiro(lista->prox, indice, linha);
 
     return lista;
 }
 
-void imprime(nodo *lista)
+void imprimeTabuleiro(nodo *lista)
 {
     if(lista != NULL)
     {
-        printf("Coluna: %d Linha: %d\n",lista->posicaoColuna, lista->posicaoLinha);
-        imprime(lista->prox);
+        printf("Linha: %d Coluna: %d Peça: %d\n",lista->posicaoLinha, lista->posicaoColuna, lista->dado);
+        imprimeTabuleiro(lista->prox);
     }
 }
+
+/*void ImprimePeca(nodo *lista, int flag)
+{
+    if(lista != NULL)
+    {
+        if(lista->dado == flag)
+            printf("Linha: %d Coluna: %d \n",lista->posicaoLinha, lista->posicaoColuna);
+
+        ImprimePeca(lista->prox);
+    }
+}*/
 
 int main()
 {
     int i;
+    //inicia o tabuleiro com nulos
     tabuleiro *t = inicializa();
 
-
-    for(i = 0; i < 12; i++)
+    //se for brancas flag=0 (são os Maximos).... pretas flag =1
+    int linha = 0;
+    while(linha < 8)
     {
-        t->brancas = preenche(t->brancas, i, 0);
-        t->pretas = preenche(t->pretas, i, 1);
+        for(i = 0; i < 8; i++)
+        {
+            t->tab = inicioTabuleiro(t->tab, i,linha);
+        }
+        linha ++;
     }
+    
         
-
-    //imprime(t->brancas);
+    printf("-------------todas-----------\n");
+    imprimeTabuleiro(t->tab);
+    printf("\n\n-------------pretas-----------");
     //imprime(t->pretas);
 
-    Arvore arv;
+    /*Arvore arv;
     criaArvore(&arv);
 
     Insere_Pai(&arv, 0, 0, 50);
@@ -77,8 +151,13 @@ int main()
     Insere_Pai(&arv, 20, 1, 11);
     Insere_Pai(&arv, 50, 2, 30);
 
-    Caminha_Pre_Fixado(&arv);
-
+    Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
+    //int res = 0;
+    consulta(&arv, 11);
+    if(res == 1)
+        printf("Elemento encontrado\n");
+    else
+        printf("Valor não encontrado");*/
     return 0;
 }
