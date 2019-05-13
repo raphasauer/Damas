@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Arvore.h"
 
 typedef struct nodo
 {
@@ -63,10 +64,20 @@ int main()
     }
         
 
-    imprime(t->brancas);
-    imprime(t->pretas);
+    //imprime(t->brancas);
+    //imprime(t->pretas);
 
-    
+    Arvore arv;
+    criaArvore(&arv);
+
+    Insere_Pai(&arv, 0, 0, 50);
+    Insere_Pai(&arv, 50, 0, 20);
+    Insere_Pai(&arv, 20, 0, 100);
+    Insere_Pai(&arv, 50, 1, 10);
+    Insere_Pai(&arv, 20, 1, 11);
+    Insere_Pai(&arv, 50, 2, 30);
+
+    Caminha_Pre_Fixado(&arv);
 
     printf("Teste!\n");
     return 0;
