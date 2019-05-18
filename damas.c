@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Arvore.h"
-#include "Tabuleiro.h"
+//#include "Tabuleiro.h"
 #define tam 64  //tamanho do tabuleiro
-
-
-
 
 
 int Regra_MovimentaLinha(int lin_partida, int dado)
@@ -141,20 +138,22 @@ int main()
     GeraArvoreBrancas(cop);
     //imprime(t->pretas);
 
-    /*Arvore arv;
+    Arvore arv;
     criaArvore(&arv);
+    Insere_Pai(&arv, *t, 0,t);
+    Insere_Pai(&arv, *t, 0, cop);
 
-    Insere_Pai(&arv, 0, 0, 50);
+    /*Insere_Pai(&arv, 0, 0, 50);
     Insere_Pai(&arv, 50, 0, 20);
     Insere_Pai(&arv, 20, 0, 100);
     Insere_Pai(&arv, 50, 1, 10);
     Insere_Pai(&arv, 20, 1, 11);
-    Insere_Pai(&arv, 50, 2, 30);
+    Insere_Pai(&arv, 50, 2, 30);*/
 
     Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
     //int res = 0;
-    consulta(&arv, 11);
+    /*consulta(&arv, 11);
     if(res == 1)
         printf("Elemento encontrado\n");
     else
