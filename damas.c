@@ -23,6 +23,8 @@ int Regra_MovimentaColunaEsq(int col_partida, int dado)
         return col_partida+1;
     else if(dado == 2 && col_partida == 7)
         return -1;
+    
+    return -1;
 }
 int Regra_MovimentaColunaDir(int col_partida, int dado)
 {
@@ -34,6 +36,8 @@ int Regra_MovimentaColunaDir(int col_partida, int dado)
         return col_partida-1;
     else if(dado == 2 && col_partida == 0)
         return -1;
+
+    return -1;
 }
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
 void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice )
@@ -135,21 +139,15 @@ int main()
 
     tabuleiro *cop = inicializa();
     cop = t;
-    GeraArvoreBrancas(cop);
+    //GeraArvoreBrancas(cop);
     //imprime(t->pretas);
 
     Arvore arv;
     criaArvore(&arv);
-    Insere_Pai(&arv, *t, 0,t);
-    Insere_Pai(&arv, *t, 0, cop);
-
-    /*Insere_Pai(&arv, 0, 0, 50);
-    Insere_Pai(&arv, 50, 0, 20);
-    Insere_Pai(&arv, 20, 0, 100);
-    Insere_Pai(&arv, 50, 1, 10);
-    Insere_Pai(&arv, 20, 1, 11);
-    Insere_Pai(&arv, 50, 2, 30);*/
-
+    Insere_Raiz(&arv, t);
+    //Insere_Pai(&arv, t, 0,t);
+    //Insere_Pai(&arv, t, 0, cop);
+    //imprimeTabuleiro(t->tab);
     Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
     //int res = 0;
