@@ -117,7 +117,7 @@ void GeraArvoreBrancas(tabuleiro *t)
 }
 int main()
 {
-    int i;
+    int i, res;
     //inicia o tabuleiro com nulos
     tabuleiro *t = inicializa();
 
@@ -132,23 +132,20 @@ int main()
         linha ++;
     }
     
-        
-    //printf("-------------todas-----------\n ");
-    //imprimeTabuleiro(t->tab);
-    //printf("\n\n-------------pretas-----------\n%d", sizeof(t));
-
     tabuleiro *cop = inicializa();
     cop = t;
-    //GeraArvoreBrancas(cop);
-    //imprime(t->pretas);
 
     Arvore arv;
     criaArvore(&arv);
-    Insere_Raiz(&arv, t);
-    //Insere_Pai(&arv, t, 0,t);
-    //Insere_Pai(&arv, t, 0, cop);
-    //imprimeTabuleiro(t->tab);
-    Caminha_Pre_Fixado(&arv);  
+    res = Insere_Raiz(&arv, t); //insere o tabuleiro inicial
+    if(res)
+        printf("Tabuleiro Iicial inserido com Sucesso\n");
+    res = Insere_Pai(&arv,t,0,cop);
+    if(res)
+        printf("Filho inserido com Sucesso\n");
+    
+    printf("TOTAL DE NOS: %d\n", ContaNos(&arv));
+    //Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
     //int res = 0;
     /*consulta(&arv, 11);

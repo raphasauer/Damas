@@ -13,8 +13,6 @@ NoArv* CriaNo(tabuleiro *Dado)
     if(ptrNo)
     {
         ptrNo->jogo = Dado;
-        printf("no criado: ");
-        //imprimeTabuleiro(ptrNo->jogo->tab);
         while(i<n)
         {
             ptrNo->SubArvores[i] = NULL;
@@ -26,46 +24,36 @@ NoArv* CriaNo(tabuleiro *Dado)
 
 int ComparaTabuleiro(NoArv *Raiz, tabuleiro *chave)
 {
-    printf("entrei comparaTabuleiro \n");
     nodo *Noaux = (nodo *) malloc(sizeof(nodo));
     if(!Noaux)
-        printf("Erro ao alocar NoAux (Arvore.c 32)\n");
+        printf("Erro ao alocar NoAux (Arvore.c 30)\n");
     nodo *NoRaiz = (nodo *) malloc(sizeof(nodo));
     if(!NoRaiz)
         printf("Erro ao alocar NoAux (Arvore.c 32)\n");
 
-    printf("cheguei 36\n");
     Noaux = chave->tab;
-    printf("cheguei 38, %d\n",Raiz->jogo->tab->dado);
     NoRaiz = Raiz->jogo->tab;
-    printf("cheguei 40\n");
     int i=0;
-    printf("pré for::: \n");
     for(i=0; i<tam; i++)
     {
-        printf("comparação for::: \n");
         if(NoRaiz->posicaoLinha == Noaux->posicaoLinha && NoRaiz->posicaoColuna == Noaux->posicaoColuna &&
             NoRaiz->dado == Noaux->dado)
         {
             NoRaiz->prox;
             Noaux->prox;
-            printf("igaul\n");
         }
         else
             return 0;
 
     }
-    return 0;
+    return 1;
 }
 NoArv* ConsultaLivre(NoArv *Raiz, tabuleiro *chave, int lado)
 {
-    printf("entrei consulta livre\n");
     if(Raiz == NULL)
         return NULL;
 
-    printf("54res::: \n");
     int res= ComparaTabuleiro(Raiz,chave);
-    printf("res::: %d", res);
     if(res == 1 && Raiz->SubArvores[lado] == NULL)
         return Raiz;
 
@@ -95,12 +83,6 @@ int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrE
     NoArv *ptrNo = CriaNo(ptrElemento);
     if ( !ptrNo )
         return -1;
-
-    if(!ptrArvore->ptrRaiz) //se rvore for vazia
-    {
-        ptrArvore->ptrRaiz = ptrNo;
-        return 1;
-    }
 
     if ( !ptrPai )  // elemento pai nao encontrado
     {
@@ -148,16 +130,30 @@ void CaminhaPreFixadoLocal(NoArv *ptrNo)
     if(ptrNo != NULL)
     {
         imprimeTabuleiro(ptrNo->jogo->tab);
-        //printf("%d  ",ptrNo->jogo->tab);
-        /*printf("-------------------\n");
         for(int i=0; i<n; i++)
         {
             CaminhaPreFixadoLocal(ptrNo->SubArvores[i]);
-        }*/
-       printf("******* \n");
+        }
     }
 }
 void Caminha_Pre_Fixado(Arvore *ptrArvore)
 {
     CaminhaPreFixadoLocal(ptrArvore->ptrRaiz);
+}
+
+int ContaNosLocal (NoArv *ptrRaiz)
+{
+    int i=0;
+    if ( !ptrRaiz )
+        return 0;
+
+    for(i=0;  i<12;  i++)
+        return 1 + ContaNosLocal(ptrRaiz->SubArvores[i]);
+    
+    return 0;   //so pra tirar o Warning mas nunca vai chegar aqui;
+}
+
+int ContaNos (Arvore *ptrArvore)
+{
+    return ContaNosLocal(ptrArvore->ptrRaiz);
 }

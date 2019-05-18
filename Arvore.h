@@ -23,5 +23,6 @@ int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrE
 int consulta(Arvore *ptrArvore, int chave);
 void Destroi(Arvore *ptrArvore);
 void Caminha_Pre_Fixado(Arvore *ptrArvore);
+int ContaNos (Arvore *ptrArvore);
 
 //#endif
