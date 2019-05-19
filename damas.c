@@ -40,10 +40,11 @@ int Regra_MovimentaColunaDir(int col_partida, int dado)
     return -1;
 }
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
-void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice )
+void Possibilidades(tabuleiro _tab, nodo *no, int vetor[], int indice )
 {
     nodo *aux = (nodo *) malloc(sizeof(nodo));
-    aux = _tab->tab;
+    //aux = _tab->tab;
+    aux = _tab.tab;
     vetor[0] = -1;
     vetor[1] = -1;
     int r = 0, posL, colDir, colEsq;
@@ -83,38 +84,128 @@ void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice )
                 vetor[1] = colEsq;
                 //printf("coluna esquerda %d\n", colEsq);
             }
-        }
+        } 
         aux = aux->prox;
             //printf("foi prox\n"); 
     }
     //printf("-------------------vetor-------------\n");
-    //printf("%d$$$%d\n", vetor[0], vetor[1]);
+    //printf("possibilidade: %d$$$%d\n", vetor[0], vetor[1]);
 }
-void GeraArvoreBrancas(tabuleiro *t)
+void testeEsq (int esq, tabuleiro *inicio, nodo *ptrNo, Arvore *arv)
 {
-    nodo *aux = (nodo *) malloc(sizeof(nodo));
-    nodo *auxMov = (nodo *) malloc(sizeof(nodo));
-    aux = t->tab;
-    int vet[2], j;
-    for(int i=0; i< 20; i++)
+    nodo *aux = (nodo *) malloc(sizeof(nodo));  //local antigo
+    nodo *auxMov = (nodo *) malloc(sizeof(nodo)); //novo local da peça
+
+
+    //faz uma cópia do tabuleiro original
+    tabuleiro *novoT = inicializa();
+    novoT = inicio;
+    aux = novoT->tab;
+    int lado =0; //controla a posição do filho na arvore
+    int i=0, j=0;
+    for(i =0; i< tam; i++)
     {
-        if(aux->dado != 0)
+        if(aux == ptrNo)
         {
-            Possibilidades(t, aux,vet, i);
-            printf("Li: %d coluna: %d vetor: #%d$$%d#\n\n", aux->posicaoLinha,aux->posicaoColuna,  vet[0], vet[1]);
-        }
-        auxMov = aux;
-        if(vet[0] != -1 && aux->dado ==1)
-        {
-            for(j=0; j< 9; j++)
-                auxMov->prox;
-            //move a peça
-            auxMov->dado = aux->dado;
-            aux->dado = 0;
+            auxMov = aux;
+                for(j=0; j< 7; j++){
+                    auxMov = auxMov->prox;}   //caminha 9 vezes o tabuleiro o que faz com que chegue na posição disponivel pra movimentar
+                
+                //move a peça
+                auxMov->dado = aux->dado;
+                aux->dado = 0;
+                printf("novoPosEsq-> lin: %d col: %d dado: %d\n", auxMov->posicaoLinha, auxMov->posicaoColuna, auxMov->dado);
+                Insere_Pai(arv, inicio, lado, novoT);
+                lado++;
+            
+
         }
         aux = aux->prox;
     }
 }
+
+void testeDir (int dir, tabuleiro *inicio, nodo *ptrNo, Arvore *arv)
+{
+    nodo *aux = (nodo *) malloc(sizeof(nodo));  //local antigo
+    nodo *auxMov = (nodo *) malloc(sizeof(nodo)); //novo local da peça
+    aux = inicio->tab;
+
+    //faz uma cópia do tabuleiro original
+    tabuleiro *novoT = inicializa();
+    novoT = inicio;
+
+    int lado =0; //controla a posição do filho na arvore
+    int i=0, j=0;
+    for(i =0; i< tam; i++)
+    {
+        auxMov = aux;
+        if(aux == ptrNo)
+        {
+            //printf("#%d$$%d\n", esq);
+            
+            
+                for(j=0; j< 9; j++){
+                    auxMov = auxMov->prox;}   //caminha 9 vezes o tabuleiro o que faz com que chegue na posição disponivel pra movimentar
+                
+                //move a peça
+                auxMov->dado = aux->dado;
+                aux->dado = 0;
+                printf("novoPosDir-> lin: %d col: %d dado: %d\n", auxMov->posicaoLinha, auxMov->posicaoColuna, auxMov->dado);
+                Insere_Pai(arv, inicio, lado, novoT);
+                lado++;
+            
+
+        }
+        aux = aux->prox;
+    }
+}
+void GeraArvoreBrancas(tabuleiro t, Arvore * arv)
+{
+    nodo *aux = (nodo *) malloc(sizeof(nodo));  //local antigo
+    nodo *auxMov = (nodo *) malloc(sizeof(nodo)); //novo local da peça
+    tabuleiro novoT;
+    inicializa2(&novoT);
+    novoT = t;
+    aux = novoT.tab;
+    for(int i=0; i<18;i++)
+        aux= aux->prox;
+    
+    aux->dado = 4;
+
+    imprimeTabuleiro(novoT.tab);
+    printf("-----------------------------------------------------------------------\n");
+    ImprimePeca(t.tab, 1);
+/*
+    int lado =0; //controla a posição do filho na arvore
+    int vet[2], j;
+    for(int i=0; i< 30; i++)
+    {
+        if(aux->dado != 0)
+        {
+            Possibilidades(t, aux,vet, i);
+            printf("\n\nLi: %d coluna: %d vetor: #%d$$%d#\n", aux->posicaoLinha,aux->posicaoColuna,  vet[0], vet[1]);
+            //ImprimePeca(t.tab, 1);
+            if(vet[1] != -1)
+            {
+                auxMov = aux;
+                for(j=0; j< 7; j++){
+                    auxMov = auxMov->prox;}   //caminha 9 vezes o tabuleiro o que faz com que chegue na posição disponivel pra movimentar
+                
+                //move a peça
+                auxMov->dado = aux->dado;
+                aux->dado = 0;
+                printf("novoPosEsq-> lin: %d col: %d dado: %d\n", auxMov->posicaoLinha, auxMov->posicaoColuna, auxMov->dado);
+                //ImprimePeca(t.tab, 1);
+                //Insere_Pai(arv, inicio, lado, novoT);
+                lado++;
+            }
+        
+        }
+
+        aux = aux->prox;
+    }*/
+}
+
 int main()
 {
     int i, res;
@@ -132,26 +223,25 @@ int main()
         linha ++;
     }
     
-    tabuleiro *cop = inicializa();
-    cop = t;
-
+    tabuleiro cop;
+    inicializa2(&cop);
+    linha = 0;
+    while(linha < 8)
+    {
+        for(i = 0; i < 8; i++)
+        {
+            cop.tab = inicioTabuleiro(cop.tab, i,linha);
+        }
+        linha ++;
+    }
+    imprimeTabuleiro(cop.tab);
     Arvore arv;
-    criaArvore(&arv);
-    res = Insere_Raiz(&arv, t); //insere o tabuleiro inicial
-    if(res)
-        printf("Tabuleiro Iicial inserido com Sucesso\n");
-    res = Insere_Pai(&arv,t,0,cop);
-    if(res)
-        printf("Filho inserido com Sucesso\n");
+    //criaArvore(&arv);
+    //res = Insere_Raiz(&arv, t); //insere o tabuleiro inicial
+    GeraArvoreBrancas(cop, &arv);
     
     printf("TOTAL DE NOS: %d\n", ContaNos(&arv));
     //Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
-    //int res = 0;
-    /*consulta(&arv, 11);
-    if(res == 1)
-        printf("Elemento encontrado\n");
-    else
-        printf("Valor não encontrado");*/
     return 0;
 }

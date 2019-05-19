@@ -73,7 +73,7 @@ int Insere_Raiz(Arvore *ptrArvore, tabuleiro *ptrElemento)
         return -1;
 
     ptrArvore->ptrRaiz = ptrNo;
-    
+    printf("Tabuleiro Iicial inserido com Sucesso\n");
     return 1;
 }
 int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento)
@@ -87,12 +87,13 @@ int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrE
     if ( !ptrPai )  // elemento pai nao encontrado
     {
         free( ptrNo );
+        printf("Filho %d falhou!!!\n", lado);
         return -2;
     }
 
     ptrNo->SubArvores[lado] = ptrPai->SubArvores[lado];
     ptrPai->SubArvores[lado] = ptrNo;
-
+    printf("Filho %d inserido com Sucesso\n", lado);
     return 1;
 }
 
@@ -129,7 +130,7 @@ void CaminhaPreFixadoLocal(NoArv *ptrNo)
 {
     if(ptrNo != NULL)
     {
-        imprimeTabuleiro(ptrNo->jogo->tab);
+        ImprimePeca(ptrNo->jogo->tab, 1);
         for(int i=0; i<n; i++)
         {
             CaminhaPreFixadoLocal(ptrNo->SubArvores[i]);

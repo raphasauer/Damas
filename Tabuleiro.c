@@ -7,6 +7,12 @@ tabuleiro *inicializa()
 
     return t;
 }
+void inicializa2(tabuleiro *t)
+{
+    //tabuleiro *t = (tabuleiro *)malloc(sizeof(tabuleiro));
+    t->tab=NULL;
+
+}
 
 nodo *criaNodo(int indice, int linha)
 {
@@ -93,13 +99,13 @@ void imprimeTabuleiro(nodo *lista)
     }
 }
 
-/*void ImprimePeca(nodo *lista, int flag)
+void ImprimePeca(nodo *lista, int flag)
 {
     if(lista != NULL)
     {
         if(lista->dado == flag)
             printf("Linha: %d Coluna: %d \n",lista->posicaoLinha, lista->posicaoColuna);
 
-        ImprimePeca(lista->prox);
+        ImprimePeca(lista->prox, flag);
     }
-}*/
+}
