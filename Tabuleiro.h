@@ -19,3 +19,5 @@ nodo *criaNodo(int indice, int linha);
 nodo *inicioTabuleiro(nodo *lista, int indice, int linha);
 void ImprimePeca(nodo *lista, int flag);
 void imprimeTabuleiro(nodo *lista);
+void copiaNodo(nodo *ptrOrigem, nodo *ptrDestino);
+void copiaTabuleiro(tabuleiro *ptrOrigem, tabuleiro *ptrDestino);

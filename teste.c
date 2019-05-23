@@ -1,6 +1,37 @@
-#include "Tabuleiro.h"
-#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
+//Estrutura do nó e do tabuleiro
+typedef struct nodo
+{
+    int posicaoColuna, posicaoLinha;
+    int dado;   //0 - vazio     1 - brancas     2-pretas
+    struct nodo *prox;
+}nodo;
+
+typedef struct
+{
+    nodo *tab;
+}tabuleiro;
+
+
+//Função de cópia do nodo - NÃO FUNCIONA (SHALLOW COPY)
+nodo *copiaLista(nodo *ptrOrigem)
+{
+    if(ptrOrigem == NULL)
+        return NULL;
+
+    nodo *novo = (nodo*)malloc(sizeof(nodo));
+
+    novo->posicaoColuna = ptrOrigem->posicaoColuna;
+    novo->posicaoLinha = ptrOrigem->posicaoLinha;
+    novo->dado = ptrOrigem->dado;
+    novo->prox = copiaLista(ptrOrigem->prox);
+
+    return novo;
+}
+
+//Inicializa o tabuleiro
 tabuleiro *inicializa()
 {
     tabuleiro *t = (tabuleiro *)malloc(sizeof(tabuleiro));
@@ -9,13 +40,7 @@ tabuleiro *inicializa()
     return t;
 }
 
-void inicializa2(tabuleiro *t)
-{
-    //tabuleiro *t = (tabuleiro *)malloc(sizeof(tabuleiro));
-    t->tab=NULL;
-
-}
-
+//Cria os nodos com a linha e a peça especificadas
 nodo *criaNodo(int indice, int linha)
 {
     nodo *novo = (nodo *)malloc(sizeof(nodo));
@@ -92,37 +117,35 @@ nodo *inicioTabuleiro(nodo *lista, int indice, int linha)
     return lista;
 }
 
-void imprimeTabuleiro(nodo *lista)
+int main()
 {
-    if(lista != NULL)
+    int i, res;
+
+    //inicia o tabuleiro com nulos
+    tabuleiro *t = inicializa();
+    tabuleiro *cop = inicializa();
+
+    //se for brancas flag=0 (são os Maximos).... pretas flag =1
+    int linha = 0;
+    while(linha < 8)
     {
-        printf("Linha: %d Coluna: %d Peça: %d\n",lista->posicaoLinha, lista->posicaoColuna, lista->dado);
-        imprimeTabuleiro(lista->prox);
+        for(i = 0; i < 8; i++)
+        {
+            t->tab = inicioTabuleiro(t->tab, i, linha);
+        }
+        linha ++;
     }
-}
 
-void ImprimePeca(nodo *lista, int flag)
-{
-    if(lista != NULL)
-    {
-        if(lista->dado == flag)
-            printf("Linha: %d Coluna: %d \n",lista->posicaoLinha, lista->posicaoColuna);
 
-        ImprimePeca(lista->prox, flag);
-    }
-}
 
-nodo *copiaLista(nodo *ptrOrigem)
-{
-    if(ptrOrigem == NULL)
-        return NULL;
+    cop->tab = copiaLista(t->tab);
 
-    nodo *novo = (nodo*)malloc(sizeof(nodo));
+    //Altera um dado na variável de destino
+    cop->tab->prox->dado = 4;
 
-    novo->posicaoColuna = ptrOrigem->posicaoColuna;
-    novo->posicaoLinha = ptrOrigem->posicaoLinha;
-    novo->dado = ptrOrigem->dado;
-    novo->prox = copiaLista(ptrOrigem->prox);
+    //Variável de origem também é afetada
+    printf("Dado modificado: %d, Dado original %d\n", cop->tab->prox->dado, t->tab->prox->dado);
 
-    return novo;
+    system("pause");
+    return 0;
 }

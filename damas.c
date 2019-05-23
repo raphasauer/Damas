@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Arvore.h"
-//#include "Tabuleiro.h"
 #define tam 64  //tamanho do tabuleiro
 
 
@@ -13,6 +12,7 @@ int Regra_MovimentaLinha(int lin_partida, int dado)
     }else 
         return lin_partida-1;
 }
+
 int Regra_MovimentaColunaEsq(int col_partida, int dado)
 {
     if(dado == 1 && col_partida != 0)
@@ -26,6 +26,7 @@ int Regra_MovimentaColunaEsq(int col_partida, int dado)
     
     return -1;
 }
+
 int Regra_MovimentaColunaDir(int col_partida, int dado)
 {
     if(dado == 1 && col_partida != 7)
@@ -39,6 +40,7 @@ int Regra_MovimentaColunaDir(int col_partida, int dado)
 
     return -1;
 }
+
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
 void Possibilidades(tabuleiro _tab, nodo *no, int vetor[], int indice )
 {
@@ -91,6 +93,7 @@ void Possibilidades(tabuleiro _tab, nodo *no, int vetor[], int indice )
     //printf("-------------------vetor-------------\n");
     //printf("possibilidade: %d$$$%d\n", vetor[0], vetor[1]);
 }
+
 void testeEsq (int esq, tabuleiro *inicio, nodo *ptrNo, Arvore *arv)
 {
     nodo *aux = (nodo *) malloc(sizeof(nodo));  //local antigo
@@ -159,6 +162,7 @@ void testeDir (int dir, tabuleiro *inicio, nodo *ptrNo, Arvore *arv)
         aux = aux->prox;
     }
 }
+
 void GeraArvoreBrancas(tabuleiro t, Arvore * arv)
 {
     nodo *aux = (nodo *) malloc(sizeof(nodo));  //local antigo
@@ -209,8 +213,10 @@ void GeraArvoreBrancas(tabuleiro t, Arvore * arv)
 int main()
 {
     int i, res;
+
     //inicia o tabuleiro com nulos
     tabuleiro *t = inicializa();
+    tabuleiro *cop = inicializa();
 
     //se for brancas flag=0 (são os Maximos).... pretas flag =1
     int linha = 0;
@@ -218,30 +224,19 @@ int main()
     {
         for(i = 0; i < 8; i++)
         {
-            t->tab = inicioTabuleiro(t->tab, i,linha);
+            t->tab = inicioTabuleiro(t->tab, i, linha);
         }
         linha ++;
     }
-    
-    tabuleiro cop;
-    inicializa2(&cop);
-    linha = 0;
-    while(linha < 8)
-    {
-        for(i = 0; i < 8; i++)
-        {
-            cop.tab = inicioTabuleiro(cop.tab, i,linha);
-        }
-        linha ++;
-    }
-    imprimeTabuleiro(cop.tab);
+
     Arvore arv;
-    //criaArvore(&arv);
-    //res = Insere_Raiz(&arv, t); //insere o tabuleiro inicial
-    GeraArvoreBrancas(cop, &arv);
+    criaArvore(&arv);
+    res = Insere_Raiz(&arv, t); //insere o tabuleiro inicial
+    //GeraArvoreBrancas(cop, &arv); ///COP AGORA É UM PONTEIRO
     
     printf("TOTAL DE NOS: %d\n", ContaNos(&arv));
-    //Caminha_Pre_Fixado(&arv);  
+    Caminha_Pre_Fixado(&arv);  
     printf("Teste!\n");
+    system("pause");
     return 0;
 }
