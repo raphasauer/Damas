@@ -13,6 +13,7 @@ NoArv* CriaNo(tabuleiro *Dado)
     if(ptrNo)
     {
         ptrNo->jogo = Dado;
+        ptrNo->pontuacao = 10;
         while(i<n)
         {
             ptrNo->SubArvores[i] = NULL;

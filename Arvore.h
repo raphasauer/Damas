@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include "Tabuleiro.h"
 #define tam 64  //tamanho do tabuleiro
-#define n 12    //quantidade de filhos = total de peças
+#define n 12    //quantidade de filhos = total de peças 
 
 
 typedef struct NoArv
 {
     tabuleiro *jogo;
+    int pontuacao;
     struct NoArv *SubArvores[n];
 }NoArv;
 
