@@ -20,7 +20,7 @@ typedef struct Arvore
 
 void criaArvore(Arvore *ptrArvore);
 int Insere_Raiz(Arvore *ptrArvore, tabuleiro *ptrElemento);
-int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento);
+int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento, int ponto);
 int consulta(Arvore *ptrArvore, int chave);
 void Destroi(Arvore *ptrArvore);
 void Caminha_Pre_Fixado(Arvore *ptrArvore);

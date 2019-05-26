@@ -77,7 +77,7 @@ int Insere_Raiz(Arvore *ptrArvore, tabuleiro *ptrElemento)
     printf("Tabuleiro Iicial inserido com Sucesso\n");
     return 1;
 }
-int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento)
+int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento, int ponto)
 {
     NoArv *ptrPai = ConsultaLivre(ptrArvore->ptrRaiz,chavePai, lado);
 
@@ -94,44 +94,16 @@ int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrE
 
     ptrNo->SubArvores[lado] = ptrPai->SubArvores[lado];
     ptrPai->SubArvores[lado] = ptrNo;
-    printf("Filho %d inserido com Sucesso\n", lado);
+    ptrNo->pontuacao = ptrNo->pontuacao * ponto;
+    printf("Filho %d inserido com Sucesso com pontuação = %d\n", lado, ptrNo->pontuacao);
     return 1;
 }
-
-
-
-/*NoArv* ConsultaLocal(NoArv *ptrNo, int ptrChave)
-{
-    int i =0;
-    if(! ptrNo) //arvore vazia
-        return NULL; 
-    
-    if(ptrNo->ptrDado == ptrChave) //se encontrou
-        return ptrNo;
-
-    for(i=0; i< n; i++)
-    {
-        NoArv *ptrNo2 = ConsultaLocal(ptrNo->SubArvores[i], ptrChave);
-        if ( ptrNo2 )
-        return ptrNo2;
-    }
-    printf("finl \n");
- 
-}
-int consulta(Arvore *ptrArvore, int chave)
-{
-    NoArv *ptrNo = ConsultaLocal(ptrArvore->ptrRaiz, chave);
-    if (!ptrNo)
-        return 0;
-    printf("encontreiiiiii \n");
-    return 1;
-}*/
 
 void CaminhaPreFixadoLocal(NoArv *ptrNo)
 {
     if(ptrNo != NULL)
     {
-        ImprimePeca(ptrNo->jogo->tab, 1);
+        imprimeTabuleiro(ptrNo->jogo->tab);
         for(int i=0; i<n; i++)
         {
             CaminhaPreFixadoLocal(ptrNo->SubArvores[i]);
