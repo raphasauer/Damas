@@ -3,14 +3,35 @@
 #include "Arvore.h"
 #define tam 64 //tamanho do tabuleiro
 
+//Verifica a possibilidade de movimentação para a próxima linha
 int Regra_MovimentaLinha(int lin_partida, int dado)
 {
-    if (dado == 1)
+    //Caso a movimentação possa ocorrer de forma normal
+    if (dado == 1 && lin_partida + 1 != 7)
+        return lin_partida + 1;
+
+    //Caso a peça chegue na última casa do tabuleiro, promove a dama
+    else if (dado == 1 && lin_partida + 1 == 7)
     {
+        dado = 3;
         return lin_partida + 1;
     }
-    else
+
+    //Se não pode se movimentar retorna o mesmo valor
+    else if (dado == 1)
+        return lin_partida;
+
+    if (dado == 2 && lin_partida - 1 != 0)
         return lin_partida - 1;
+
+    else if (dado == 2 && lin_partida - 1 == 0)
+    {
+        dado = 4;
+        return lin_partida - 1;
+    }
+
+    else if (dado == 2)
+        return lin_partida;
 }
 
 int Regra_MovimentaColunaEsq(int col_partida, int dado)
@@ -40,6 +61,7 @@ int Regra_MovimentaColunaDir(int col_partida, int dado)
 
     return -1;
 }
+
 int CapturaDir(nodo *no, int vetor[])
 {
     nodo *captura = (nodo *)malloc(sizeof(nodo));
@@ -52,12 +74,13 @@ int CapturaDir(nodo *no, int vetor[])
         vetor[0] = captura->posicaoColuna;
         vetor[1] = captura->posicaoLinha;
         vetor[2]++; //pq comeu 1 peça
-    }else
+    }
+    else
         return 0;
-    
-    return 1;
 
+    return 1;
 }
+
 int CapturaEsq(nodo *no, int vetor[])
 {
     nodo *captura = (nodo *)malloc(sizeof(nodo));
@@ -70,12 +93,13 @@ int CapturaEsq(nodo *no, int vetor[])
         vetor[3] = captura->posicaoColuna;
         vetor[4] = captura->posicaoLinha;
         vetor[5]++; //pq comeu 1 peça
-    }else
+    }
+    else
         return 0;
-    
-    return 1;
 
+    return 1;
 }
+
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
 void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
 {
@@ -85,32 +109,43 @@ void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
     vetor[1] = -1;
     int r = 0, posL, colDir, colEsq;
     int i = 0;
-    posL = Regra_MovimentaLinha(no->posicaoLinha, no->dado);
-    colDir = Regra_MovimentaColunaDir(no->posicaoColuna, no->dado);
-    colEsq = Regra_MovimentaColunaEsq(no->posicaoColuna, no->dado);
 
-    for (i = 0; i < tam; i++)
+    //Movimentação de peças que não são damas
+    if (no->dado < 3)
     {
-        if (colDir != -1)
-        {
-            if (aux->posicaoLinha == posL && aux->posicaoColuna == colDir && aux->dado == 0)
-                vetor[0] = colDir;
-        }
+        posL = Regra_MovimentaLinha(no->posicaoLinha, no->dado);
+        colDir = Regra_MovimentaColunaDir(no->posicaoColuna, no->dado);
+        colEsq = Regra_MovimentaColunaEsq(no->posicaoColuna, no->dado);
 
-        if (colEsq != -1)
+        for (i = 0; i < tam; i++)
         {
-            if (aux->posicaoLinha == posL && aux->posicaoColuna == colEsq && aux->dado == 0)
-                vetor[1] = colEsq;
+            if (colDir != -1)
+            {
+                if (aux->posicaoLinha == posL && aux->posicaoColuna == colDir && aux->dado == 0)
+                    vetor[0] = colDir;
+            }
+
+            if (colEsq != -1)
+            {
+                if (aux->posicaoLinha == posL && aux->posicaoColuna == colEsq && aux->dado == 0)
+                    vetor[1] = colEsq;
+            }
+            aux = aux->prox;
         }
-        aux = aux->prox;
     }
+    else
+    {
+        ;
+    }
+    
 }
+
 //retorna em vetor quais são as colunas disponiveis para que o nó possa ir
 void Possibilidades2(tabuleiro *_tab, nodo *no, int vetor[])
 {
     nodo *aux = (nodo *)malloc(sizeof(nodo)); //nova posição disponivel
     aux = _tab->tab;
-    int r = 0, posL, colDir, colEsq,res;
+    int r = 0, posL, colDir, colEsq, res;
     int i = 0;
 
     for (int j = 0; j < 4; j++)
@@ -136,7 +171,7 @@ void Possibilidades2(tabuleiro *_tab, nodo *no, int vetor[])
                 }
                 else if (aux->dado != no->dado) //se for peça do oponente
                 {
-                    CapturaDir(aux, vetor); 
+                    CapturaDir(aux, vetor);
                 }
             }
         }
@@ -145,12 +180,13 @@ void Possibilidades2(tabuleiro *_tab, nodo *no, int vetor[])
         {
             if (aux->posicaoLinha == posL && aux->posicaoColuna == colEsq)
             {
-                if(aux->dado == 0) //não tem peça para capturar
+                if (aux->dado == 0) //não tem peça para capturar
                 {
                     vetor[3] = colEsq;
                     vetor[4] = posL;
                     //vetor[2]  não altera o valor pq não comeu nenhuma peça
-                }else if(aux->dado != no->dado) //se for peça do oponente
+                }
+                else if (aux->dado != no->dado) //se for peça do oponente
                 {
                     res = CapturaEsq(aux, vetor);
                 }
@@ -159,6 +195,7 @@ void Possibilidades2(tabuleiro *_tab, nodo *no, int vetor[])
         aux = aux->prox;
     }
 }
+
 void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
 {
     nodo *aux = (nodo *)malloc(sizeof(nodo));    //local antigo
@@ -215,7 +252,7 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
             //movimento a direita peça branca
             if (vet[0] != -1)
             {
-                
+
                 temp->posicaoLinha = vet[1];
                 temp->posicaoColuna = vet[0];
                 temp->dado = 0;
@@ -248,9 +285,8 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
                     }
                     auxMov = auxMov->prox;
                 }
-
             }
-            free(temp); 
+            free(temp);
         }
         aux = aux->prox;
     }
@@ -258,6 +294,7 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
     free(aux);
     free(auxMov);
 }
+
 void GeraArvorePretas(tabuleiro *t, Arvore *arv)
 {
     nodo *aux = (nodo *)malloc(sizeof(nodo));    //local antigo
@@ -275,7 +312,7 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
             Possibilidades2(t, aux, vet);
             printf("\n\nLi: %d coluna: %d vetor: #%d$$%d#\n", aux->posicaoLinha, aux->posicaoColuna, vet[0], vet[3]);
             nodo *temp = (nodo *)malloc(sizeof(nodo)); //nova posição disponivel
-            
+
             //movimento pra direita
             if (vet[0] != -1)
             {
@@ -356,6 +393,7 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
     free(aux);
     free(auxMov);
 }
+
 int main()
 {
     int i, res;
@@ -390,7 +428,7 @@ int main()
 
     res = Insere_Raiz(&arv, e); //insere o tabuleiro inicial
     //GeraArvoreBrancas(e, &arv);
-    GeraArvorePretas(e, &arv );
+    GeraArvorePretas(e, &arv);
     //imprimeTabuleiro(arv.ptrRaiz->jogo->tab);
     //printf("************************");
     //imprimeTabuleiro(arv.ptrRaiz->SubArvores[0]->jogo->tab);

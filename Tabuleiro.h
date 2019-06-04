@@ -4,7 +4,7 @@
 typedef struct nodo
 {
     int posicaoColuna, posicaoLinha;
-    int dado;   //0 - vazio     1 - brancas     2-pretas
+    int dado;   //0 - vazio     1 - brancas     2-pretas -> 3 - Dama branca     4 - Dama preta
     struct nodo *prox;
 }nodo;
 
