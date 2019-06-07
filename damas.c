@@ -24,6 +24,60 @@ tabuleiro *minimax(NoArv *ptrArv)
     }
 }
 
+//Algoritmo para teste da eficiência da IA
+nodo *jogadaAleatoria(nodo *ptrNodo)
+{
+    int i, pecas = 0;
+    int posLinha[12];
+    int posColuna[12];
+    nodo *aux = ptrNodo;
+
+    //Número de controle: -1
+    for(i = 0; i < 12; i++)
+    {
+        posLinha[i] = -1;
+        posColuna[i] = -1;
+    }
+
+    //Quantas peças eu tenho? Onde elas estão?
+    for(i = 0; i < 64; i++)
+    {
+        if(ptrNodo->dado == 2)
+        {
+            posLinha[pecas] = ptrNodo->posicaoLinha;
+            posColuna[pecas] = ptrNodo->posicaoColuna;
+            pecas++;
+        }
+        ptrNodo = ptrNodo->prox;
+    }
+
+    ptrNodo = aux;
+
+    //Existe a possibilidade de capturar uma peça? -> Refazer
+    for(i = 0; i < pecas; i++)
+    {
+        //Casos que não são na borda
+        if(posColuna[i] != 0 || posColuna[i] != 7)
+        {
+            //Condição de linha
+            if(ptrNodo->posicaoLinha == posLinha - 1)
+            {
+                if(ptrNodo->posicaoColuna == posColuna[i] - 1 || posColuna[i] + 1)
+                    if(ptrNodo->dado == 1)
+                        //come
+            }
+            else
+            {
+                /* code */
+            }
+            
+        }
+    }
+
+
+
+}
+
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
 /*void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
 {
