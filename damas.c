@@ -54,7 +54,7 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
     ptrNodo = aux;
 
     //Existe a possibilidade de capturar uma peça? -> Refazer
-    for(i = 0; i < pecas; i++)
+    /* for(i = 0; i < pecas; i++)
     {
         //Casos que não são na borda
         if(posColuna[i] != 0 || posColuna[i] != 7)
@@ -68,11 +68,11 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
             }
             else
             {
-                /* code */
+                
             }
             
         }
-    }
+    }*/
 
 
 
@@ -106,7 +106,7 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
         }
         aux = aux->prox;
     }
-}*/
+}
 
 void GeraArvorePretas(tabuleiro *t, Arvore *arv)
 {
