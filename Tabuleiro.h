@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct nodo
+typedef struct nodox
 {
     int posicaoColuna, posicaoLinha;
     int dado;   //0 - vazio     1 - brancas     2-pretas
-    struct nodo *prox;
+    struct nodox *prox;
 }nodo;
 
 typedef struct
