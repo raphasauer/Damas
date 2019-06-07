@@ -10,6 +10,7 @@ typedef struct NoArv
 {
     tabuleiro *jogo;
     int pontuacao;
+    int nivel;
     struct NoArv *SubArvores[n];
 }NoArv;
 

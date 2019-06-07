@@ -1,5 +1,28 @@
 #include "RegraJogo.h"
 
+//Função que determina a melhor jogada baseada na pontuação dos tabuleiros
+tabuleiro *minimax(NoArv *ptrArv)
+{
+    int i, j = 10;
+    if (ptrArv->nivel % 2 == 0) //par, jogada de Max
+    {
+        for (i = 0; i < n; i++)
+        {
+            if (ptrArv->SubArvores[i]->pontuacao > j)
+                j = i;
+        }
+        return ptrArv->SubArvores[i]->jogo;
+    }
+    else
+    {
+        for (i = 0; i < n; i++)
+        {
+            if (ptrArv->SubArvores[i]->pontuacao > j)
+                j = i;
+        }
+        return ptrArv->SubArvores[i]->jogo;
+    }
+}
 
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
 /*void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
@@ -48,7 +71,7 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
             Possibilidades2(t, aux, vet);
             printf("\n\nLi: %d coluna: %d vetor: #%d$$%d#\n", aux->posicaoLinha, aux->posicaoColuna, vet[0], vet[3]);
             nodo *temp = (nodo *)malloc(sizeof(nodo)); //nova posição disponivel
-            
+
             //movimento pra direita
             if (vet[0] != -1)
             {
@@ -137,7 +160,6 @@ int main()
     tabuleiro *t = inicializa();
     tabuleiro *e = inicializa();
     tabuleiro *c = inicializa();
-    
 
     //se for brancas flag=0 (são os Maximos).... pretas flag =1
     int linha = 0;
@@ -151,7 +173,6 @@ int main()
     }
     Arvore arv;
     criaArvore(&arv);
-
 
     nodo *a = (nodo *)malloc(sizeof(nodo));
     e->tab = copiaLista(t->tab);
