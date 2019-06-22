@@ -74,7 +74,7 @@ int Insere_Raiz(Arvore *ptrArvore, tabuleiro *ptrElemento)
         return -1;
 
     ptrArvore->ptrRaiz = ptrNo;
-    printf("Tabuleiro Iicial inserido com Sucesso\n");
+    printf("Tabuleiro Inicial inserido com Sucesso\n");
     return 1;
 }
 int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento, int ponto)
