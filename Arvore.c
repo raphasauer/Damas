@@ -80,8 +80,11 @@ int Insere_Raiz(Arvore *ptrArvore, tabuleiro *ptrElemento)
 int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrElemento, int ponto)
 {
     NoArv *ptrPai = ConsultaLivre(ptrArvore->ptrRaiz,chavePai, lado);
+    //faz um copia do tabuleiro pra inserir no filho
+    tabuleiro *copia = (tabuleiro *) malloc(sizeof(tabuleiro));
+    copia = copiaTabuleiro(ptrElemento);
 
-    NoArv *ptrNo = CriaNo(ptrElemento);
+    NoArv *ptrNo = CriaNo(copia);
     if ( !ptrNo )
         return -1;
 
@@ -96,6 +99,9 @@ int Insere_Pai(Arvore *ptrArvore, tabuleiro *chavePai, int lado, tabuleiro *ptrE
     ptrPai->SubArvores[lado] = ptrNo;
     ptrNo->pontuacao = ptrNo->pontuacao * ponto;
     printf("Filho %d inserido com Sucesso com pontuação = %d\n", lado, ptrNo->pontuacao);
+    //ImprimePeca(ptrElemento->tab, 1); //pra conferir se fez a alteração certa
+    //printf("\n\n caminhamento\n"); // confere o cain
+    //Caminha_Pre_Fixado(ptrArvore);
     return 1;
 }
 
@@ -103,7 +109,7 @@ void CaminhaPreFixadoLocal(NoArv *ptrNo)
 {
     if(ptrNo != NULL)
     {
-        imprimeTabuleiro(ptrNo->jogo->tab);
+        ImprimePeca(ptrNo->jogo->tab, 1);
         for(int i=0; i<n; i++)
         {
             CaminhaPreFixadoLocal(ptrNo->SubArvores[i]);

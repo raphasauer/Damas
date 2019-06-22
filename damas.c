@@ -29,7 +29,9 @@ int main()
     GeraArvoreBrancas(t, arv);
     //GeraArvorePretas(t, arv);
 
-    //Caminha_Pre_Fixado(arv);
+    Caminha_Pre_Fixado(arv);
+    //printf("-------------------filho 2----------\n");
+    //ImprimePeca(arv->ptrRaiz->SubArvores[0]->jogo->tab, 1);
 
     //--------------------------------------------------------------------------
     //tabuleiro ficticio para testar captura de peças
@@ -50,6 +52,6 @@ int main()
     GeraArvoreBrancas(e, arv2);*/
     //-----------------------------------------------------------------------------
     printf("Teste!\n");
-    //system("pause");
+    system("pause");
     return 0;
 }

@@ -189,13 +189,12 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
                         }
                         printf("novoPosEsq-> lin: %d col: %d dado: %d\n", auxMov->posicaoLinha, auxMov->posicaoColuna, auxMov->dado);
                         res = Insere_Pai(arv, t, lado, novoT, nvDados->pontEsq);
-                        //printf("-------------tabuleiro esquerda-------\n");
-                        //imprimeTabuleiro(novoT->tab);
                         lado++;
                         //desfaz a troca após inserir na arvore para que não troque essa mesma peça novamente
                         aux->dado = auxMov->dado;
                         auxMov->dado = 0;
                         temp->dado = guarda;
+                        //novoT->tab = copiaLista(t->tab);
                         break; //pra não comparar os outro nós (desnecessario)
                     }
                     auxMov = auxMov->prox;
@@ -227,8 +226,6 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
                         }
                         printf("novoPosDir-> lin: %d col: %d dado: %d\n", auxMov->posicaoLinha, auxMov->posicaoColuna, auxMov->dado);
                         res = Insere_Pai(arv, t, lado, novoT, nvDados->pontDir);
-                        //printf("-------------tabuleiro direita-------\n");
-                        //imprimeTabuleiro(novoT->tab);
                         lado++;
                         //desfaz a troca após inserir na arvore para que não troque essa mesma peça novamente
                         aux->dado = auxMov->dado;
@@ -244,7 +241,6 @@ void GeraArvoreBrancas(tabuleiro *t, Arvore *arv)
         }
         aux = aux->prox;
     }
-    free(novoT);
     free(aux);
     free(auxMov);
 }
@@ -339,7 +335,6 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
                         //ImprimePeca(t.tab, 1);
                         res = Insere_Pai(arv, t, lado, novoT, nvDados->pontEsq);
                         lado++;
-                        //imprimeTabuleiro(novoT->tab);
                         //desfaz a troca após inserir na arvore para que não troque essa mesma peça novamente
                         aux->dado = auxMov->dado;
                         auxMov->dado = 0;
@@ -353,7 +348,6 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
         }
         aux = aux->prox;
     }
-    free(novoT);
     free(aux);
     free(auxMov);
 }

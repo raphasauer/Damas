@@ -20,3 +20,4 @@ nodo *inicioTabuleiro(nodo *lista, int indice, int linha);
 void ImprimePeca(nodo *lista, int flag);
 void imprimeTabuleiro(nodo *lista);
 nodo *copiaLista(nodo *ptrOrigem);
+tabuleiro *copiaTabuleiro(tabuleiro *ptrOrg);

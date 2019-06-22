@@ -126,3 +126,15 @@ nodo *copiaLista(nodo *ptrOrigem)
 
     return novo;
 }
+
+tabuleiro *copiaTabuleiro(tabuleiro *ptrOrg)
+{
+    if(ptrOrg == NULL)
+        return NULL;
+    
+    tabuleiro *novo = inicializa();
+
+    novo->tab = copiaLista(ptrOrg->tab);
+
+    return novo;
+}
