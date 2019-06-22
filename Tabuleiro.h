@@ -21,3 +21,7 @@ void ImprimePeca(nodo *lista, int flag);
 void imprimeTabuleiro(nodo *lista);
 nodo *copiaLista(nodo *ptrOrigem);
 tabuleiro *copiaTabuleiro(tabuleiro *ptrOrg);
+//Retorna 1 ou 2 se existe uma peça na linha e coluna indicados, 1 para peças brancas, 2 para peças pretas e 0 se a posição está livre. -1 caso a posição seja inválida
+int buscaLista(nodo *ptrLista, int linha, int coluna);
+//Retorna o ponteiro da posição na lista da linha e coluna fornecidas
+nodo *retornaPonteiro(nodo* ptrLista, int linha, int coluna);
