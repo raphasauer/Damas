@@ -8,26 +8,40 @@
 //Função que determina a melhor jogada baseada na pontuação dos tabuleiros
 tabuleiro *minimax(NoArv *ptrArv)
 {
-    int i, j = 10;
+    int i, k, j = 10;           //nb - np + 10
     if (ptrArv->nivel % 2 == 0) //par, jogada de Max
     {
         for (i = 0; i < n; i++)
         {
             if (ptrArv->SubArvores[i]->pontuacao > j)
-                j = i;
+            {
+                j = ptrArv->SubArvores[i]->pontuacao;
+                k = i;
+            }
         }
-        ptrArv->pontuacao = ptrArv->SubArvores[i]->pontuacao;
-        return ptrArv->SubArvores[i]->jogo;
+        ptrArv->pontuacao = j; 
+        return ptrArv->SubArvores[k]->jogo;
     }
     else
     {
         for (i = 0; i < n; i++)
         {
-            if (ptrArv->SubArvores[i]->pontuacao > j)
-                j = i;
+            if (ptrArv->SubArvores[i]->pontuacao < j)
+            {
+                j = ptrArv->SubArvores[i]->pontuacao;
+                k = i;
+            }
         }
-        ptrArv->pontuacao = ptrArv->SubArvores[i]->pontuacao;
-        return ptrArv->SubArvores[i]->jogo;
+        ptrArv->pontuacao = j;
+        return ptrArv->SubArvores[k]->jogo;
+    }
+}
+
+for(i = 0; i < 12; i++)
+{
+    for(j = 0; j < 12; j++)
+    {
+        minimax(ptrArv->)
     }
 }
 
@@ -120,6 +134,8 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
             andarColuna[j++] = posColuna[i];
         }
     }
+    if(j == 0)
+        return ptrNodo;
 
     //Gera a jogada aleatória
     int r = rand() % j;
