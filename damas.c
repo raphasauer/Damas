@@ -1,8 +1,9 @@
-#include "RegraJogo.h"
+//#include "RegraJogo.h"
 #include "tabuleiro.h"
 #include "Arvore.h"
 #include <time.h>
 #include <stdlib.h>
+#define RAND_MAX 12
 
 //Função que determina a melhor jogada baseada na pontuação dos tabuleiros
 tabuleiro *minimax(NoArv *ptrArv)
@@ -15,6 +16,7 @@ tabuleiro *minimax(NoArv *ptrArv)
             if (ptrArv->SubArvores[i]->pontuacao > j)
                 j = i;
         }
+        ptrArv->pontuacao = ptrArv->SubArvores[i]->pontuacao;
         return ptrArv->SubArvores[i]->jogo;
     }
     else
@@ -24,6 +26,7 @@ tabuleiro *minimax(NoArv *ptrArv)
             if (ptrArv->SubArvores[i]->pontuacao > j)
                 j = i;
         }
+        ptrArv->pontuacao = ptrArv->SubArvores[i]->pontuacao;
         return ptrArv->SubArvores[i]->jogo;
     }
 }
@@ -31,15 +34,19 @@ tabuleiro *minimax(NoArv *ptrArv)
 //Algoritmo para teste da eficiência da IA
 nodo *jogadaAleatoria(nodo *ptrNodo)
 {
-    int i, captura, j, k,pecas = 0;
+    //Varíaveis da função
+    int i, captura, j, k, pecas = 0;
+    captura = 0;
+    j = 0;
     int posLinha[12];
     int posColuna[12];
-    int andarLinha[12];
-    int andarColuna[12];
+    int andarLinha[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int andarColuna[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     nodo *aux = ptrNodo;
     nodo *ptrCapturada;
     nodo *ptrCapturador;
     nodo *ptrPosicaoFinal;
+
     //Número de controle: -1
     for (i = 0; i < 12; i++)
     {
@@ -62,20 +69,25 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
     ptrNodo = aux;
 
     //Existe a possibilidade de capturar uma peça? Se sim, captura
-    for (i = 0; i < 12; i++)
+    for (i = 0; i < pecas; i++)
     {
         if (buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] - 1) == 1)
+        {
+            printf("Tem alguem embaixo de mim\n");
             if (buscaLista(ptrNodo, posLinha[i] - 2, posColuna[i] - 2) == 0)
             {
                 captura = 1;
                 break;
             }
-            else if (buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] + 1) == 1)
-                if (buscaLista(ptrNodo, posLinha[i] - 2, posColuna[i] + 2) == 0)
-                {
-                    captura = 2;
-                    break;
-                }
+        }
+        else if (buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] + 1) == 1)
+        {
+            if (buscaLista(ptrNodo, posLinha[i] - 2, posColuna[i] + 2) == 0)
+            {
+                captura = 2;
+                break;
+            }
+        }
     }
     if (captura != 0)
     {
@@ -95,47 +107,49 @@ nodo *jogadaAleatoria(nodo *ptrNodo)
         ptrCapturador->dado = 0;
         ptrCapturada->dado = 0;
         ptrPosicaoFinal->dado = 2;
+        //printf("A peça andou de L %d C %d para L %d C %d\n", ptrCapturador->posicaoLinha, ptrCapturador->posicaoColuna, ptrPosicaoFinal->posicaoLinha, ptrPosicaoFinal->posicaoColuna);
         return ptrNodo;
     }
-
     //Quantas peças podem realizar movimentos
-    for(i = 0; i < 12; i++)
+    for (i = 0; i < pecas; i++)
     {
         //Essas peças têm um vetor próprio
-        if(buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] - 1) == 0 || (ptrNodo, posLinha[i] - 1, posColuna[i] + 1) == 0)
+        if (buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] - 1) == 0 || (ptrNodo, posLinha[i] - 1, posColuna[i] + 1) == 0)
         {
             andarLinha[j] = posLinha[i];
             andarColuna[j++] = posColuna[i];
-        }    
+        }
     }
 
     //Gera a jogada aleatória
-    srand(time(NULL));
     int r = rand() % j;
     k = rand() % 2;
 
     //Verifica se a posição em que a peça vai movimentar é válida, se não muda o lado e atualiza os ponteiros
-    ptrCapturador = retornaPonteiro(ptrNodo, andarLinha[j], andarColuna[j]);
-    if(k == 0)
+    ptrCapturador = retornaPonteiro(ptrNodo, andarLinha[r], andarColuna[r]);
+
+    if (k == 0)
     {
-        if(buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] - 1) == 0)
-            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[j] - 1, andarColuna[j] - 1);
+        if (buscaLista(ptrNodo, posLinha[r] - 1, posColuna[r] - 1) == 0)
+            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[r] - 1, andarColuna[r] - 1);
         else
-            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[j] - 1, andarColuna[j] + 1);
+            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[r] - 1, andarColuna[r] + 1);
     }
     else
-    {   if(buscaLista(ptrNodo, posLinha[i] - 1, posColuna[i] + 1) == 0)
-            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[j] - 1, andarColuna[j] + 1);
+    {
+        if (buscaLista(ptrNodo, posLinha[r] - 1, posColuna[r] + 1) == 0)
+            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[r] - 1, andarColuna[r] + 1);
         else
-            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[j] - 1, andarColuna[j] - 1);
+            ptrPosicaoFinal = retornaPonteiro(ptrNodo, andarLinha[r] - 1, andarColuna[r] - 1);
     }
     ptrCapturador->dado = 0;
     ptrPosicaoFinal->dado = 2;
+    //printf("A peça andou de L %d C %d para L %d C %d\n", ptrCapturador->posicaoLinha, ptrCapturador->posicaoColuna, ptrPosicaoFinal->posicaoLinha, ptrPosicaoFinal->posicaoColuna);
     return ptrNodo;
 }
 
 //retorna em vetor quais são as colunas disponiveis para que o no possa ir
-void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
+/*void Possibilidades(tabuleiro *_tab, nodo *no, int vetor[], int indice)
 {
     nodo *aux = (nodo *)malloc(sizeof(nodo));
     aux = _tab->tab;
@@ -261,9 +275,11 @@ void GeraArvorePretas(tabuleiro *t, Arvore *arv)
     free(novoT);
     free(aux);
     free(auxMov);
-}
+}*/
 int main()
 {
+    srand(time(NULL));
+
     int i, res;
 
     //inicia o tabuleiro com nulos
@@ -281,7 +297,36 @@ int main()
         }
         linha++;
     }
-    Arvore arv;
+    //imprimeTabuleiro(t->tab);
+    //printf("Teste de jogada aleatória\n");
+    //t->tab = jogadaAleatoria(t->tab);
+    if (t->tab == NULL)
+        printf("Erro, tabuleiro nulo!\n");
+    nodo *ptrAux = t->tab;
+    for (i = 0; i < 64; i++)
+    {
+        t->tab->dado = 0;
+        t->tab = t->tab->prox;
+    }
+    t->tab = ptrAux;
+    ptrAux = retornaPonteiro(t->tab, 7, 2);
+    ptrAux->dado = 2;
+    ptrAux = retornaPonteiro(t->tab, 5, 0);
+    ptrAux->dado = 2;
+    ptrAux = retornaPonteiro(t->tab, 4, 1);
+    ptrAux->dado = 1;
+    ptrAux = retornaPonteiro(t->tab, 5, 4);
+    ptrAux->dado = 1;
+    ptrAux = retornaPonteiro(t->tab, 7, 7);
+    ptrAux->dado = 2;
+    //printf("%d\n", buscaLista(t->tab, 4, 1));
+    //imprimeTabuleiro(t->tab);
+    t->tab = jogadaAleatoria(t->tab);
+    t->tab = jogadaAleatoria(t->tab);
+    t->tab = jogadaAleatoria(t->tab);
+    t->tab = jogadaAleatoria(t->tab);
+    //imprimeTabuleiro(t->tab);
+    /*Arvore arv;
     criaArvore(&arv);
 
     nodo *a = (nodo *)malloc(sizeof(nodo));
@@ -295,8 +340,8 @@ int main()
     a->dado = 2;
     //imprimeTabuleiro(e->tab);
 
-    res = Insere_Raiz(&arv, e); //insere o tabuleiro inicial
-    GeraArvoreBrancas(e, &arv);
+    //res = Insere_Raiz(&arv, e); //insere o tabuleiro inicial
+    //GeraArvoreBrancas(e, &arv);
     //Caminha_Pre_Fixado(&arv);
     //GeraArvorePretas(e, &arv );
     //imprimeTabuleiro(arv.ptrRaiz->SubArvores[0]->jogo->tab);
@@ -305,6 +350,6 @@ int main()
     //printf("TOTAL DE NOS: %d\n", ContaNos(&arv));
     //Caminha_Pre_Fixado(&arv);
     printf("Teste!\n");
-    system("pause");
+    system("pause");*/
     return 0;
 }

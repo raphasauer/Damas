@@ -142,6 +142,7 @@ tabuleiro *copiaTabuleiro(tabuleiro *ptrOrg)
 int buscaLista(nodo *ptrLista, int linha, int coluna)
 {
     nodo *aux = ptrLista;
+    //printf("Verificando o tipo de peça de %d %d\n", linha, coluna);
     while (aux != NULL)
     {
         if (aux->posicaoColuna == coluna && aux->posicaoLinha == linha)
@@ -159,14 +160,17 @@ int buscaLista(nodo *ptrLista, int linha, int coluna)
 nodo *retornaPonteiro(nodo *ptrLista, int linha, int coluna)
 {
     nodo *aux = ptrLista;
+    //printf("Buscando por um elemento na linha %d e coluna %d\n", linha, coluna);
     while (aux != NULL)
     {
         if (aux->posicaoColuna == coluna && aux->posicaoLinha == linha)
         {
+            //printf("%d e %d não são iguais a %d %d\n", aux->posicaoLinha, aux->posicaoColuna, linha, coluna);
             return aux;
         }
         else
         {
+           // printf("%d e %d são iguais a %d %d\n", aux->posicaoLinha, aux->posicaoColuna, linha, coluna);
             aux = aux->prox;
         }
     }
